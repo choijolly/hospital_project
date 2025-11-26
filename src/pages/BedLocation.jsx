@@ -1,19 +1,18 @@
 // src/pages/BedLocation.jsx
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import SectionTitle from "../components/SectionTitle";
 import { useSearch } from "../context/SearchContext";
 
-// 병상 유형 버튼에 쓸 라벨들
-const BED_TYPES = [
+// 환자(병상) 유형 리스트
+const PATIENT_TYPES = [
   "응급실",
   "수술실",
-  "신경",
   "중환자실",
+  "입원실",
+  "소아",
   "신생아중환자실",
   "흉부중환자실",
   "일반중환자실",
-  "입원실",
   "내과중환자실",
   "외과중환자실",
   "정형외과",
@@ -21,22 +20,23 @@ const BED_TYPES = [
   "신경외과중환자실",
   "약물중환자",
   "화상중환자",
-  "소아",
 ];
 
 function BedLocation() {
-  // 전역 상태에서 선택된 병상 유형, 출발지 setter 사용
   const { selectedType, setSelectedType, setOrigin } = useSearch();
-
-  // 입력창 값 (아직 확정 전)
   const [inputValue, setInputValue] = useState("");
   const navigate = useNavigate();
 
-  // 출발지 설정 완료 눌렀을 때
-  const handleComplete = () => {
+  // "병원 리스트 보기" 버튼 클릭 시
+  const handleSubmit = () => {
     const value = inputValue.trim() || "내 위치";
-    setOrigin(value);        // 전역 상태에 저장
-    navigate("/location");   // 결과 페이지로 이동
+    setOrigin(value);
+    navigate("/location");
+  };
+
+  // "현재 위치 자동 감지하기" (지금은 예시로 값만 넣어줌)
+  const handleDetectLocation = () => {
+    setInputValue("현재 위치");
   };
 
   return (
@@ -50,89 +50,137 @@ function BedLocation() {
     >
       {/* 상단 타이틀 */}
       <h1
-        style={{ fontSize: "28px", fontWeight: "700", textAlign: "center" }}
+        style={{
+          fontSize: "28px",
+          fontWeight: 700,
+          textAlign: "center",
+          marginBottom: "8px",
+        }}
       >
-        병상 유형 & 출발지 기반 병원 검색
+        환자 이송 설정
       </h1>
 
-      <p style={{ textAlign: "center", color: "#4b5563", marginTop: "8px" }}>
-        찾고 싶은 병상 유형을 선택하고, 출발지를 설정해 가장 가까운 병원을
-        확인해보세요.
+      <p
+        style={{
+          textAlign: "center",
+          color: "#4b5563",
+          marginBottom: "32px",
+        }}
+      >
+        환자 상태와 출발 위치를 설정하여 최적의 병원을 찾아보세요.
       </p>
 
+      {/* 메인 레이아웃: 왼쪽 지도, 오른쪽 카드 */}
       <div
         style={{
           display: "flex",
-          marginTop: "40px",
           gap: "24px",
-          alignItems: "flex-start",
+          alignItems: "stretch",
         }}
       >
-        {/* 왼쪽: 지도 + 출발지 설정 */}
+        {/* 왼쪽: 지도 영역 */}
         <div
           style={{
             flex: 1,
+            minHeight: "360px",
+            backgroundColor: "#f3f4f6",
+            borderRadius: "20px",
             display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
             flexDirection: "column",
-            gap: "16px",
+            color: "#6b7280",
           }}
         >
-          {/* 지도 영역 */}
           <div
             style={{
-              flex: 1,
-              minHeight: "260px",
-              backgroundColor: "#f3f4f6",
-              borderRadius: "12px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              flexDirection: "column",
-              color: "#6b7280",
+              width: "18px",
+              height: "18px",
+              borderRadius: "999px",
+              background:
+                "radial-gradient(circle at 30% 30%, #ff8ea1, #e11d48)",
+              marginBottom: "12px",
             }}
-          >
-            <div style={{ fontSize: "48px" }}>📍</div>
-            <div>지도가 표시됩니다</div>
+          />
+          <div style={{ fontSize: "15px" }}>지도가 표시됩니다</div>
+        </div>
+
+        {/* 오른쪽: 설정 카드 */}
+        <div
+          style={{
+            width: "420px",
+            padding: "28px 24px",
+            borderRadius: "20px",
+            border: "1px solid #e5e7eb",
+            backgroundColor: "#ffffff",
+          }}
+        >
+          {/* 1. 환자 유형 선택 */}
+          <div style={{ marginBottom: "24px" }}>
+            <h2
+              style={{
+                fontSize: "16px",
+                fontWeight: 600,
+                marginBottom: "8px",
+              }}
+            >
+              1. 환자 유형 선택
+            </h2>
+
+            <select
+              value={selectedType}
+              onChange={(e) => setSelectedType(e.target.value)}
+              style={{
+                width: "100%",
+                padding: "10px 12px",
+                borderRadius: "8px",
+                border: "1px solid #d1d5db",
+                fontSize: "14px",
+              }}
+            >
+              {PATIENT_TYPES.map((type) => (
+                <option key={type} value={type}>
+                  {type}
+                </option>
+              ))}
+            </select>
           </div>
 
-          {/* 출발지 입력 카드 */}
-          <div
-            style={{
-              width: "100%",
-              padding: "24px",
-              border: "1px solid #e5e7eb",
-              borderRadius: "12px",
-              backgroundColor: "#ffffff",
-            }}
-          >
-            <h2 style={{ fontSize: "18px", marginBottom: "16px" }}>
-              출발지 설정
+          {/* 2. 위치 입력 방법 */}
+          <div>
+            <h2
+              style={{
+                fontSize: "16px",
+                fontWeight: 600,
+                marginBottom: "8px",
+              }}
+            >
+              2. 위치 입력 방법
             </h2>
 
             <button
+              onClick={handleDetectLocation}
               style={{
                 width: "100%",
                 padding: "12px",
                 borderRadius: "8px",
                 border: "2px solid #10b981",
                 color: "#10b981",
-                background: "white",
+                backgroundColor: "#ffffff",
                 fontSize: "15px",
                 cursor: "pointer",
-              }}
-              onClick={() => {
-                // 나중에 실제 현재 위치 연동 가능
-                setInputValue("현재 위치");
+                marginBottom: "12px",
               }}
             >
-              현재 위치 자동 감지하기 (예시)
+              현재 위치 자동 감지하기
             </button>
 
             <div
               style={{
                 textAlign: "center",
-                margin: "16px 0",
+                margin: "8px 0 12px",
                 color: "#9ca3af",
+                fontSize: "13px",
               }}
             >
               또는
@@ -148,66 +196,27 @@ function BedLocation() {
                 padding: "12px",
                 borderRadius: "8px",
                 border: "1px solid #d1d5db",
+                fontSize: "14px",
+                marginBottom: "16px",
               }}
             />
 
             <button
-              onClick={handleComplete}
+              onClick={handleSubmit}
               style={{
                 width: "100%",
-                marginTop: "16px",
                 padding: "12px",
                 borderRadius: "8px",
-                background: "#10b981",
+                backgroundColor: "#10b981",
                 border: "none",
-                color: "white",
+                color: "#ffffff",
                 fontSize: "16px",
+                fontWeight: 600,
                 cursor: "pointer",
               }}
             >
-              출발지 설정 완료
+              병원 리스트 보기
             </button>
-          </div>
-        </div>
-
-        {/* 오른쪽: 병상 유형 버튼들만 표시 (병원 리스트 없음) */}
-        <div style={{ flex: 1 }}>
-          <SectionTitle
-            title="병상 유형 선택"
-            subtitle="원하는 병상 유형을 선택하세요."
-          />
-
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(4, 1fr)",
-              gap: "12px",
-              marginTop: "24px",
-            }}
-          >
-            {BED_TYPES.map((type) => {
-              const isActive = selectedType === type;
-              return (
-                <button
-                  key={type}
-                  onClick={() => setSelectedType(type)}
-                  style={{
-                    padding: "14px 12px",
-                    borderRadius: "16px",
-                    border: isActive
-                      ? "1px solid #10b981"
-                      : "1px solid #e5e7eb",
-                    backgroundColor: isActive ? "#10b981" : "#ffffff",
-                    color: isActive ? "#ffffff" : "#111827",
-                    fontSize: "15px",
-                    fontWeight: 500,
-                    cursor: "pointer",
-                  }}
-                >
-                  {type}
-                </button>
-              );
-            })}
           </div>
         </div>
       </div>
