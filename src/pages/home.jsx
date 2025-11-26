@@ -59,7 +59,7 @@ function Home() {
           fontSize: "16px",
           cursor: "pointer",
         }}
-        onClick={() => navigate("/location")} 
+        onClick={() => navigate("/beds")} 
       >
         현재 위치 기반 병원 찾기
       </button>

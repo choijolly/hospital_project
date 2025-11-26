@@ -35,11 +35,11 @@ function Header() {
 
         {/* 가운데 메뉴 */}
         <nav style={{ display: "flex", gap: "16px", fontSize: "14px" }}>
-          <Link to="/location" style={{ textDecoration: "none", color: "#374151" }}>
+          <Link to="/beds" style={{ textDecoration: "none", color: "#374151" }}>
             병원 찾기
           </Link>
 
-          <Link to="/beds" style={{ textDecoration: "none", color: "#374151" }}>
+          <Link to="/location" style={{ textDecoration: "none", color: "#374151" }}>
             병상 현황
           </Link>
 

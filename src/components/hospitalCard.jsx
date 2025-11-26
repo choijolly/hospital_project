@@ -1,4 +1,6 @@
+import { useNavigate } from "react-router-dom";
 function HospitalCard({ name, timeText, beds }) {
+  const navigate = useNavigate();
   return (
     <article
       style={{
@@ -59,6 +61,7 @@ function HospitalCard({ name, timeText, beds }) {
           📞 전화걸기
         </button>
         <button
+        onClick={() => navigate("/route")}
           style={{
             flex: 1,
             padding: "8px 0",
