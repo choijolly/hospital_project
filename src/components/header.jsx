@@ -48,29 +48,47 @@ function Header() {
           </Link>
         </nav>
 
-        {/* 오른쪽 로그인/회원가입 */}
-        <div style={{ display: "flex", gap: "8px" }}>
-          <Link
-            to="/login"
-            style={{ textDecoration: "none", color: "#374151" }}
-          >
-            로그인
-          </Link>
-           <Link
+       {/* 오른쪽 로그인 / 회원가입 */}
+<div
+  style={{
+    display: "flex",
+    gap: "12px",
+    alignItems: "center",
+    fontSize: "14px",
+  }}
+>
+  {/* 로그인 버튼 (흰색 버튼) */}
+  <Link
+    to="/login"
+    style={{
+      padding: "8px 16px",
+      borderRadius: "999px",
+      border: "1px solid #10b981",
+      backgroundColor: "white",
+      color: "#10b981",
+      fontWeight: 600,
+      textDecoration: "none",
+    }}
+  >
+    로그인
+  </Link>
+
+  {/* 회원가입 버튼 (초록색 버튼) */}
+  <Link
     to="/signup"
     style={{
       padding: "8px 16px",
       borderRadius: "999px",
       backgroundColor: "#10b981",
       color: "#ffffff",
-      fontSize: "14px",
-      textDecoration: "none",
       fontWeight: 600,
+      textDecoration: "none",
     }}
   >
     회원가입
   </Link>
-        </div>
+</div>
+
       </div>
     </header>
   );
