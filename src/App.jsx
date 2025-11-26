@@ -1,5 +1,6 @@
-// src/App.jsx
+import Signup from "./pages/Signup";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Login from "./pages/Login";
 
 import Header from "./components/Header";
 import Home from "./pages/Home";
@@ -28,6 +29,8 @@ function App() {
 
           {/* 경로 안내 페이지 (그대로 사용) */}
           <Route path="/route" element={<RoutePage />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </SearchProvider>
     </BrowserRouter>
